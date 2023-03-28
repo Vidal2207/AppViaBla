@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ViaBla</string>
+    <string name="login">Inicio de sesión</string>
+    <string name="email">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="btnLogin">Acceder</string>
+    <string name="register">Registrarse</string>
+    <string name="clickLogin">Iniciar sesión</string>
+    <string name="name">Nombre completo</string>
+</resources>
