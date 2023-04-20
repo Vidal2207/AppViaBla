@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -20,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Register extends AppCompatActivity {
     ///ELEMENTOS USADOS EN LA VISTA GRÁFICA
-    TextInputEditText editTextEmail, editTextPassword;
+    TextInputEditText editTextEmail, editTextPassword,editTextPassword2;
     Button btnRegister;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
@@ -44,6 +45,7 @@ public class Register extends AppCompatActivity {
         //SE ASIGNAN VALORES A VARIABLES PREVIAMENTE CREADAS
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
+        editTextPassword2 = findViewById(R.id.password2);
         btnRegister = findViewById(R.id.btn_register);
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.loginNow);
@@ -63,10 +65,10 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 progressBar.setVisibility(View.VISIBLE);
-                String email,password;
+                String email,password,password2;
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText());
-
+                password2 = String.valueOf(editTextPassword2.getText());
                 if(email.isEmpty()){
                     Toast.makeText(Register.this, "Ingresa un correo electrónico", Toast.LENGTH_SHORT).show();
                     return;
@@ -75,6 +77,20 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(Register.this, "Ingresa una contraseña", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if(password != password2){
+                    Toast.makeText(Register.this, "Contraseña no son iguales", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(password.length()<8){
+                    Toast.makeText(Register.this, "Contraseña debe ser mayor a 8 caracteres", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }, 5000);
                 // FUNCIÓN QUE CONECTA CON FIRE BASE PARA LA AUTENTIFICACIÓN
                 mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {

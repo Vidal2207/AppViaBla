@@ -3,8 +3,9 @@
     <string name="login">Inicio de sesión</string>
     <string name="email">Correo electrónico</string>
     <string name="password">Contraseña</string>
+    <string name="password2">Confirmar Contraseña</string>
     <string name="btnLogin">Acceder</string>
     <string name="register">Registrarse</string>
     <string name="clickLogin">Iniciar sesión</string>
-    <string name="name">Nombre completo</string>
+    <string name="name">Usuario</string>
 </resources>
