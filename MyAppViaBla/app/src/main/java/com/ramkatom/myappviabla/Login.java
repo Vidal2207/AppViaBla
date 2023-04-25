@@ -4,9 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +62,24 @@ public class Login extends AppCompatActivity {
                 finish();
             }
         });
+        /////MOSTRAR CONTRASEÑA
+        CheckBox showPasswordCheckbox = findViewById(R.id.show_password_checkbox);
+        showPasswordCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    editTextPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                } else {
+                    editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+            }
+        });
+        /////REDONDEAR BOTON
+        GradientDrawable gradientDrawable = new GradientDrawable();
+        gradientDrawable.setColor(0xFF133343); // Cambia el color del botón
+        gradientDrawable.setCornerRadius(30); // Cambia el radio de los bordes
+        btnLogin.setBackground(gradientDrawable); // Establece el fondo del botón como el objeto GradientDrawable
+
         //LOGUEARSE
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
