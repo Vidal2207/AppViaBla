@@ -101,12 +101,6 @@
                 android:hint="@string/password2" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
         <Button
             android:id="@+id/btn_register"
             android:text="@string/register"
@@ -124,6 +118,11 @@
             android:text="Ya tienes una cuenta. Inicia Sesión"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
 

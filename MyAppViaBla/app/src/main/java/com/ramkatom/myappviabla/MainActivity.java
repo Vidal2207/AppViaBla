@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
         else{
+
             textView.setText(user.getEmail());
         }
 

@@ -81,7 +81,7 @@ public class Register extends AppCompatActivity {
                     public void run() {
                         progressBar.setVisibility(View.GONE);
                     }
-                }, 5000);
+                }, 3000);
                 String email,password,password2,usuario;
                 usuario = String.valueOf(editTextUser.getText());
                 email = String.valueOf(editTextEmail.getText());
