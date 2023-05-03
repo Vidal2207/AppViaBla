@@ -52,7 +52,8 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="25dp"
-                android:hint="@string/name" />
+                android:hint="@string/name"
+                android:singleLine="true"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -67,7 +68,8 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="25dp"
-                android:hint="@string/email" />
+                android:hint="@string/email"
+                android:singleLine="true"/>
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -83,7 +85,8 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="25dp"
                 android:inputType="textPassword"
-                android:hint="@string/password" />
+                android:hint="@string/password"
+                android:singleLine="true"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -98,7 +101,8 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="25dp"
                 android:inputType="textPassword"
-                android:hint="@string/password2" />
+                android:hint="@string/password2"
+                android:singleLine="true"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button

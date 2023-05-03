@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -19,8 +20,12 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class Register extends AppCompatActivity {
     ///ELEMENTOS USADOS EN LA VISTA GRÁFICA
@@ -91,12 +96,23 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(Register.this, "Ingresa un correo electrónico", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (!email.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
+                    // El correo electrónico no es válido
+                    Toast.makeText(Register.this, "Ingrese un correo electrónico válido de Gmail", Toast.LENGTH_SHORT).show();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }, 3000);
+                    return;
+                }
                 if(password.isEmpty()){
                     Toast.makeText(Register.this, "Ingresa una contraseña", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(password == password2){
-                    Toast.makeText(Register.this, "La contraseña es diferente", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register.this, "Las contraseñas son diferentes", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(password.length()<8){
@@ -112,19 +128,56 @@ public class Register extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             progressBar.setVisibility(View.GONE);
                             if (task.isSuccessful()) {
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                DatabaseReference mRef = mDatabase.getReference("usuarios").child(user.getUid());
-                                mRef.child("usuario").setValue(usuario);
-                                mRef.child("correo").setValue(email);
 
-                                Toast.makeText(Register.this, "Cuenta creada",
-                                        Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplicationContext(),Login.class);
-                                startActivity(intent);
-                                finish();
+                                DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("usuarios");
+                                ////REVISAR QUE EL USUARIO Y EMAIL NO EXISTAN
+                                Query usuarioPorNombreQuery = usuariosRef.orderByChild("usuario").equalTo(usuario);
+                                Query usuarioPorCorreoQuery = usuariosRef.orderByChild("correo").equalTo(email);
+                                usuarioPorNombreQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists()) {
+                                            // Ya existe un usuario con el mismo nombre de usuario
+                                            Toast.makeText(getApplicationContext(), "Este nombre de usuario ya está en uso", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            // El nombre de usuario no está en uso
+                                            usuarioPorCorreoQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                    if (dataSnapshot.exists()) {
+                                                        // Ya existe un usuario con el mismo correo electrónico
+                                                        Toast.makeText(Register.this, "Este correo electrónico ya está en uso", Toast.LENGTH_SHORT).show();
+                                                    } else {
+                                                        // El correo electrónico no está en uso
+                                                        FirebaseUser user = mAuth.getCurrentUser();
+                                                        DatabaseReference mRef = mDatabase.getReference("usuarios").child(user.getUid());
+                                                        mRef.child("usuario").setValue(usuario);
+                                                        mRef.child("correo").setValue(email);
 
+                                                        Toast.makeText(Register.this, "Cuenta creada",
+                                                                Toast.LENGTH_SHORT).show();
+                                                        Intent intent = new Intent(getApplicationContext(),Login.class);
+                                                        startActivity(intent);
+                                                        finish();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                    Toast.makeText(Register.this, "Error al verificar usuario por correo electrónico: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        Toast.makeText(Register.this, "Error al verificar usuario por nombre: " + databaseError.getMessage(),
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             } else {
-                                Toast.makeText(Register.this, "Authentication failed.",
+                                Toast.makeText(Register.this, "Registro fallido",
                                         Toast.LENGTH_SHORT).show();
                             }
                         }

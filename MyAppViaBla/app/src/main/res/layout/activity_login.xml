@@ -55,7 +55,8 @@
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/email" />
+                android:hint="@string/email"
+                android:singleLine="true"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -71,7 +72,8 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="15dp"
                 android:inputType="textPassword"
-                android:hint="@string/password" />
+                android:hint="@string/password"
+                android:singleLine="true"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <CheckBox

@@ -100,6 +100,18 @@ public class Login extends AppCompatActivity {
                     }, 3000);
                     return;
                 }
+                if (!email.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
+                    // El correo electrónico no es válido
+                    Toast.makeText(Login.this, "Ingrese un correo electrónico válido de Gmail", Toast.LENGTH_SHORT).show();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }, 3000);
+                    return;
+                }
+
                 if(password.isEmpty()){
                     Toast.makeText(Login.this, "Ingresa una contraseña", Toast.LENGTH_SHORT).show();
                     new Handler().postDelayed(new Runnable() {
