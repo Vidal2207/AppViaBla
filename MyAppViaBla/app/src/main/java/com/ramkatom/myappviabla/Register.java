@@ -123,65 +123,65 @@ public class Register extends AppCompatActivity {
 
                 // FUNCIÓN QUE CONECTA CON FIRE BASE PARA LA AUTENTIFICACIÓN
                 mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            progressBar.setVisibility(View.GONE);
-                            if (task.isSuccessful()) {
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                progressBar.setVisibility(View.GONE);
+                                if (task.isSuccessful()) {
 
-                                DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("usuarios");
-                                ////REVISAR QUE EL USUARIO Y EMAIL NO EXISTAN
-                                Query usuarioPorNombreQuery = usuariosRef.orderByChild("usuario").equalTo(usuario);
-                                Query usuarioPorCorreoQuery = usuariosRef.orderByChild("correo").equalTo(email);
-                                usuarioPorNombreQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        if (dataSnapshot.exists()) {
-                                            // Ya existe un usuario con el mismo nombre de usuario
-                                            Toast.makeText(getApplicationContext(), "Este nombre de usuario ya está en uso", Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            // El nombre de usuario no está en uso
-                                            usuarioPorCorreoQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                    if (dataSnapshot.exists()) {
-                                                        // Ya existe un usuario con el mismo correo electrónico
-                                                        Toast.makeText(Register.this, "Este correo electrónico ya está en uso", Toast.LENGTH_SHORT).show();
-                                                    } else {
-                                                        // El correo electrónico no está en uso
-                                                        FirebaseUser user = mAuth.getCurrentUser();
-                                                        DatabaseReference mRef = mDatabase.getReference("usuarios").child(user.getUid());
-                                                        mRef.child("usuario").setValue(usuario);
-                                                        mRef.child("correo").setValue(email);
+                                    DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("usuarios");
+                                    ////REVISAR QUE EL USUARIO Y EMAIL NO EXISTAN
+                                    Query usuarioPorNombreQuery = usuariosRef.orderByChild("usuario").equalTo(usuario);
+                                    Query usuarioPorCorreoQuery = usuariosRef.orderByChild("correo").equalTo(email);
+                                    usuarioPorNombreQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            if (dataSnapshot.exists()) {
+                                                // Ya existe un usuario con el mismo nombre de usuario
+                                                Toast.makeText(getApplicationContext(), "Este nombre de usuario ya está en uso", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                // El nombre de usuario no está en uso
+                                                usuarioPorCorreoQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                        if (dataSnapshot.exists()) {
+                                                            // Ya existe un usuario con el mismo correo electrónico
+                                                            Toast.makeText(Register.this, "Este correo electrónico ya está en uso", Toast.LENGTH_SHORT).show();
+                                                        } else {
+                                                            // El correo electrónico no está en uso
+                                                            FirebaseUser user = mAuth.getCurrentUser();
+                                                            DatabaseReference mRef = mDatabase.getReference("usuarios").child(user.getUid());
+                                                            mRef.child("usuario").setValue(usuario);
+                                                            mRef.child("correo").setValue(email);
 
-                                                        Toast.makeText(Register.this, "Cuenta creada",
-                                                                Toast.LENGTH_SHORT).show();
-                                                        Intent intent = new Intent(getApplicationContext(),Login.class);
-                                                        startActivity(intent);
-                                                        finish();
+                                                            Toast.makeText(Register.this, "Cuenta creada",
+                                                                    Toast.LENGTH_SHORT).show();
+                                                            Intent intent = new Intent(getApplicationContext(),Login.class);
+                                                            startActivity(intent);
+                                                            finish();
+                                                        }
                                                     }
-                                                }
 
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                    Toast.makeText(Register.this, "Error al verificar usuario por correo electrónico: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                                        Toast.makeText(Register.this, "Error al verificar usuario por correo electrónico: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                            }
                                         }
-                                    }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                                        Toast.makeText(Register.this, "Error al verificar usuario por nombre: " + databaseError.getMessage(),
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            } else {
-                                Toast.makeText(Register.this, "Registro fallido",
-                                        Toast.LENGTH_SHORT).show();
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                                            Toast.makeText(Register.this, "Error al verificar usuario por nombre: " + databaseError.getMessage(),
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(Register.this, "Registro fallido",
+                                            Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }
-                });
+                        });
             }
         });
     }
