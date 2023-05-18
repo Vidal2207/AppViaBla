@@ -8,6 +8,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -63,6 +64,25 @@ public class Login extends AppCompatActivity {
                 finish();
             }
         });
+        ///QUITAR SALTOS DE LINEA
+        editTextEmail.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                String txtUser = editTextEmail.getText().toString();
+                txtUser.replaceAll("\n", "");
+                editTextEmail.setText(txtUser);
+                return true;
+            }
+        });
+        editTextPassword.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                String txtUser = editTextPassword.getText().toString();
+                txtUser.replaceAll("\n", "");
+                editTextPassword.setText(txtUser);
+                return true;
+            }
+        });
         /////MOSTRAR CONTRASEÑA
         CheckBox showPasswordCheckbox = findViewById(R.id.show_password_checkbox);
         showPasswordCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -75,6 +95,8 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+        /////
+
         /////REDONDEAR BOTON
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setColor(0xFF133343); // Cambia el color del botón
@@ -139,7 +161,7 @@ public class Login extends AppCompatActivity {
                             startActivity(intent);
                             finish();
                         } else {
-                            Toast.makeText(Login.this, "Authentication failed.",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this, "Cuenta no encontrada",Toast.LENGTH_SHORT).show();
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {

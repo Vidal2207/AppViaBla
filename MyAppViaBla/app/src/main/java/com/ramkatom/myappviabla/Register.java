@@ -8,6 +8,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -76,6 +77,45 @@ public class Register extends AppCompatActivity {
         gradientDrawable.setColor(0xFF133343); // Cambia el color del botón
         gradientDrawable.setCornerRadius(30); // Cambia el radio de los bordes
         btnRegister.setBackground(gradientDrawable); // Establece el fondo del botón como el objeto GradientDrawable
+        ////
+        editTextUser.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                String txtUser = editTextUser.getText().toString();
+                txtUser.replaceAll("\n", "");
+                editTextUser.setText(txtUser);
+                return true;
+            }
+        });
+        ////
+        editTextEmail.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                String txtUser = editTextEmail.getText().toString();
+                txtUser.replaceAll("\n", "");
+                editTextEmail.setText(txtUser);
+                return true;
+            }
+        });
+        editTextPassword.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                String txtUser = editTextPassword.getText().toString();
+                txtUser.replaceAll("\n", "");
+                editTextPassword.setText(txtUser);
+                return true;
+            }
+        });
+        editTextPassword2.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                String txtUser = editTextPassword2.getText().toString();
+                txtUser.replaceAll("\n", "");
+                editTextPassword2.setText(txtUser);
+                return true;
+            }
+        });
+
         /// BOTÓN PARA REGISTRARSE EN LA APP
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
