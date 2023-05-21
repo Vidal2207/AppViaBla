@@ -3,14 +3,22 @@ package com.ramkatom.myappviabla;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +44,7 @@ public class Register extends AppCompatActivity {
     FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     ProgressBar progressBar;
     TextView textView;
+    private Dialog privacyDialog;
     /// Cuando inicialices la actividad, verificar si el usuario ya accedió
     @Override
     public void onStart() {
@@ -72,6 +81,56 @@ public class Register extends AppCompatActivity {
                 finish();
             }
         });
+        ////AVISO DE PRIVACIDAD
+        //setContentView(R.layout.activity_login);
+        // Inicializa el diálogo de privacidad
+        privacyDialog = new Dialog(this);
+        privacyDialog.setContentView(R.layout.dialog_privacy);
+
+        // Obtén la referencia al TextView del aviso de privacidad
+        TextView privacyTextView = findViewById(R.id.text_privacy);
+        privacyTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Muestra la ventana emergente
+                privacyDialog.show();
+            }
+        });
+
+        // Configura el evento onClick del botón para cerrar la ventana emergente
+        Button closeButton = privacyDialog.findViewById(R.id.btn_close);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cierra la ventana emergente
+                privacyDialog.dismiss();
+            }
+        });
+
+        // Formato del texto del aviso de privacidad
+        String privacyPolicyText = getString(R.string.privacy_notice);
+        SpannableString spannableString = new SpannableString(privacyPolicyText);
+
+        // Formato para el título "Política de privacidad"
+        StyleSpan titleStyle = new StyleSpan(Typeface.BOLD);
+        spannableString.setSpan(titleStyle, 0, 19, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        // Formato para los párrafos
+        StyleSpan paragraphStyle = new StyleSpan(Typeface.NORMAL);
+        spannableString.setSpan(paragraphStyle, 19, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        TextView privacyTextViewDialog = privacyDialog.findViewById(R.id.text_privacy_dialog);
+        privacyTextViewDialog.setText(spannableString);
+
+        // Establece el tamaño del diálogo
+        Window window = privacyDialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(window.getAttributes());
+            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+            layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+            window.setAttributes(layoutParams);
+        }
         /////REDONDEAR BOTON
         GradientDrawable gradientDrawable = new GradientDrawable();
         gradientDrawable.setColor(0xFF133343); // Cambia el color del botón
@@ -127,6 +186,7 @@ public class Register extends AppCompatActivity {
                         progressBar.setVisibility(View.GONE);
                     }
                 }, 3000);
+
                 String email,password,password2,usuario;
                 usuario = String.valueOf(editTextUser.getText());
                 email = String.valueOf(editTextEmail.getText());
@@ -159,7 +219,11 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(Register.this, "Contraseña debe ser mayor a 8 caracteres", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                CheckBox termsCheckbox = findViewById(R.id.terms_checkbox);
+                if (!termsCheckbox.isChecked()) {
+                    Toast.makeText(Register.this, "Debe aceptar los términos y condiciones", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 // FUNCIÓN QUE CONECTA CON FIRE BASE PARA LA AUTENTIFICACIÓN
                 mAuth.createUserWithEmailAndPassword(email, password)

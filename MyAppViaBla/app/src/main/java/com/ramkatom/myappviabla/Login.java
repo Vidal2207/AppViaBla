@@ -114,15 +114,14 @@ public class Login extends AppCompatActivity {
         privacyTextViewDialog.setText(spannableString);
 
         // Establece el tamaño del diálogo
-                Window window = privacyDialog.getWindow();
-                if (window != null) {
-                    WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-                    layoutParams.copyFrom(window.getAttributes());
-                    layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-                    layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
-                    window.setAttributes(layoutParams);
-                }
-
+        Window window = privacyDialog.getWindow();
+        if (window != null) {
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+            layoutParams.copyFrom(window.getAttributes());
+            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+            layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+            window.setAttributes(layoutParams);
+        }
         ///QUITAR SALTOS DE LINEA
         editTextEmail.setOnKeyListener(new View.OnKeyListener() {
             @Override
