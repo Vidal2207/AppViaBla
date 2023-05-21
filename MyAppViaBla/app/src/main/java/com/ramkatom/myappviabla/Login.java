@@ -3,13 +3,20 @@ package com.ramkatom.myappviabla;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -31,6 +38,7 @@ public class Login extends AppCompatActivity {
     ProgressBar progressBar;
     TextView textView;
     /// Cuando inicialices la actividad, verificar si el usuario ya accedió
+    private Dialog privacyDialog;
     @Override
     public void onStart() {
         super.onStart();
@@ -59,11 +67,62 @@ public class Login extends AppCompatActivity {
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),Register.class);
+                Intent intent = new Intent(getApplicationContext(), Register.class);
                 startActivity(intent);
                 finish();
             }
         });
+        ////AVISO DE PRIVACIDAD
+        //setContentView(R.layout.activity_login);
+        // Inicializa el diálogo de privacidad
+        privacyDialog = new Dialog(this);
+        privacyDialog.setContentView(R.layout.dialog_privacy);
+
+        // Obtén la referencia al TextView del aviso de privacidad
+        TextView privacyTextView = findViewById(R.id.text_privacy);
+        privacyTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Muestra la ventana emergente
+                privacyDialog.show();
+            }
+        });
+
+        // Configura el evento onClick del botón para cerrar la ventana emergente
+        Button closeButton = privacyDialog.findViewById(R.id.btn_close);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cierra la ventana emergente
+                privacyDialog.dismiss();
+            }
+        });
+
+        // Formato del texto del aviso de privacidad
+        String privacyPolicyText = getString(R.string.privacy_notice);
+        SpannableString spannableString = new SpannableString(privacyPolicyText);
+
+        // Formato para el título "Política de privacidad"
+        StyleSpan titleStyle = new StyleSpan(Typeface.BOLD);
+        spannableString.setSpan(titleStyle, 0, 19, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        // Formato para los párrafos
+        StyleSpan paragraphStyle = new StyleSpan(Typeface.NORMAL);
+        spannableString.setSpan(paragraphStyle, 19, spannableString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        TextView privacyTextViewDialog = privacyDialog.findViewById(R.id.text_privacy_dialog);
+        privacyTextViewDialog.setText(spannableString);
+
+        // Establece el tamaño del diálogo
+                Window window = privacyDialog.getWindow();
+                if (window != null) {
+                    WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+                    layoutParams.copyFrom(window.getAttributes());
+                    layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+                    window.setAttributes(layoutParams);
+                }
+
         ///QUITAR SALTOS DE LINEA
         editTextEmail.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -108,11 +167,11 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 progressBar.setVisibility(View.VISIBLE);
-                String email,password;
+                String email, password;
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText());
 
-                if(email.isEmpty()){
+                if (email.isEmpty()) {
                     Toast.makeText(Login.this, "Ingresa un correo electrónico", Toast.LENGTH_SHORT).show();
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -134,7 +193,7 @@ public class Login extends AppCompatActivity {
                     return;
                 }
 
-                if(password.isEmpty()){
+                if (password.isEmpty()) {
                     Toast.makeText(Login.this, "Ingresa una contraseña", Toast.LENGTH_SHORT).show();
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -157,11 +216,11 @@ public class Login extends AppCompatActivity {
                                     progressBar.setVisibility(View.GONE);
                                 }
                             }, 2000);
-                            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
-                            Toast.makeText(Login.this, "Cuenta no encontrada",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this, "Cuenta no encontrada", Toast.LENGTH_SHORT).show();
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {

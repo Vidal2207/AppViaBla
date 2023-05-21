@@ -94,14 +94,25 @@
             android:textStyle="bold"
             android:gravity="center"
             android:layout_marginTop="20dp"
-            android:text="No tienes una cuenta? Registrarse"
+            android:text="No tienes una cuenta? Registrate"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="@color/ic_launcher_background"/>
         <ProgressBar
             android:id="@+id/progressBar"
             android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/text_privacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aviso de privacidad"
+            android:textStyle="bold"
+            android:textColor="@color/ic_launcher_background"
+            android:layout_marginTop="16dp"
+            android:clickable="true" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
