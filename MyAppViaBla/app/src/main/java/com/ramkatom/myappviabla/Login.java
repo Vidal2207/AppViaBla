@@ -132,7 +132,7 @@ public class Login extends AppCompatActivity {
                 return true;
             }
         });
-       
+
         /////MOSTRAR CONTRASEÑA
         CheckBox showPasswordCheckbox = findViewById(R.id.show_password_checkbox);
         showPasswordCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
