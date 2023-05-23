@@ -112,7 +112,5 @@
             android:textColor="@color/ic_launcher_background"
             android:layout_marginTop="16dp"
             android:clickable="true" />
-
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

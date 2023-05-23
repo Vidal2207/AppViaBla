@@ -52,7 +52,7 @@ public class Register extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if(currentUser != null){
-            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(),Map.class);
             startActivity(intent);
             finish();
         }
@@ -156,24 +156,6 @@ public class Register extends AppCompatActivity {
                 return true;
             }
         });
-        editTextPassword.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                String txtUser = editTextPassword.getText().toString();
-                txtUser.replaceAll("\n", "");
-                editTextPassword.setText(txtUser);
-                return true;
-            }
-        });
-        editTextPassword2.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                String txtUser = editTextPassword2.getText().toString();
-                txtUser.replaceAll("\n", "");
-                editTextPassword2.setText(txtUser);
-                return true;
-            }
-        });
 
         /// BOTÓN PARA REGISTRARSE EN LA APP
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -212,7 +194,7 @@ public class Register extends AppCompatActivity {
                     return;
                 }
                 if(password == password2){
-                    Toast.makeText(Register.this, "Las contraseñas son diferentes", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register.this, "Las contraseñas deben ser identicas", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(password.length()<8){

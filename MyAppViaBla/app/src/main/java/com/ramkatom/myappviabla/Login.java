@@ -44,7 +44,7 @@ public class Login extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(),Map.class);
             startActivity(intent);
             finish();
         }
@@ -132,15 +132,7 @@ public class Login extends AppCompatActivity {
                 return true;
             }
         });
-        editTextPassword.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                String txtUser = editTextPassword.getText().toString();
-                txtUser.replaceAll("\n", "");
-                editTextPassword.setText(txtUser);
-                return true;
-            }
-        });
+       
         /////MOSTRAR CONTRASEÑA
         CheckBox showPasswordCheckbox = findViewById(R.id.show_password_checkbox);
         showPasswordCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -215,7 +207,7 @@ public class Login extends AppCompatActivity {
                                     progressBar.setVisibility(View.GONE);
                                 }
                             }, 2000);
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), Map.class);
                             startActivity(intent);
                             finish();
                         } else {
